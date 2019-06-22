@@ -6,10 +6,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.dstevens.rokugandice.strategies.BalancedStrategy;
+import com.dstevens.rokugandice.strategies.CheckStrategy;
+
 public class App {
 
     public static void main(String a[]) {
-        int numberOfChecks = 1000;
+        int numberOfChecks = 10000;
         
         long minTn = 1;
         long maxTn = 5;
@@ -17,6 +20,8 @@ public class App {
         long maxRingDieCount = 5;
         long minSkillDieCount = 0;
         long maxSkillDieCount = 5;
+        
+        CheckStrategy strategy = new BalancedStrategy();
         
         System.out.println("tn,ringDice,skillDice,successPercentage,avgSuccess,avgOppurtunities,avgStrife");
         for(long tn=minTn;tn <= maxTn;tn++) {
@@ -28,7 +33,7 @@ public class App {
                         List<Die> skillDice = getSkillDice(skillDiceCount);
                         int numberToKeep = ringDice.size();
                         
-                        CheckResult rollCheck = new Check(ringDice, skillDice, numberToKeep, tn).rollCheck();
+                        CheckResult rollCheck = new Check(ringDice, skillDice, numberToKeep, tn).rollCheck(strategy);
                         results.add(rollCheck);
                     }
                     System.out.println(tn + "," + ringDiceCount +"," + skillDiceCount + "," + displayAverage(results));
